@@ -36,4 +36,15 @@ describe("Teste da classe ContaBancaria", () => {
     expect(() => conta.transferir(200, contaDois)).toThrow("Valor inválido ou saldo insuficiente")
   })
   
+  test("Consultar Saldo", () => {
+    conta.depositar(500)
+    expect(conta.consultarSaldo()).toBe(`Seu saldo atual é de R$ 500`)
+  })
+  
+  test("Exibir Extrato", () => {
+    conta.depositar(200)
+    conta.sacar(100)
+    expect(conta.exibirExtrato()).toBe("1. Depósito de R$ 200.00\n2. Saque de R$ 100.00")
+  })
+  
 })
