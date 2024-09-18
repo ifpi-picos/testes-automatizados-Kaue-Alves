@@ -4,8 +4,10 @@ import ContaBancaria from "./ContaBancaria.ts";
 
 describe("Teste da classe ContaBancaria", () => {
   let conta: ContaBancaria
+  let contaDois: ContaBancaria
   beforeEach(() => {
     conta = new ContaBancaria()
+    contaDois = new ContaBancaria()
   })
 
   test("Método Depositar", () => {
@@ -22,7 +24,16 @@ describe("Teste da classe ContaBancaria", () => {
   })
   
   test("Método Sacar - Saque Inválido", () => {
-    expect(() => expect(conta.sacar(-80)).toThrow("Valor inválido ou saldo insuficiente"))
+    expect(() => conta.sacar(-80)).toThrow("Valor inválido ou saldo insuficiente")
   })
 
+  test("Método transferir", () => {
+    conta.depositar(500)
+    expect(conta.transferir(200, contaDois)).toBe(300)
+  })
+
+  test("Método transferir - Valor Inválido", () => {
+    expect(() => conta.transferir(200, contaDois)).toThrow("Valor inválido ou saldo insuficiente")
+  })
+  
 })
