@@ -5,7 +5,7 @@ export default class ContaBancaria {
   private extrato: string[]; // Armazena o histórico de operações realizadas na conta (depósitos, saques, transferências).
 
   public constructor() {
-    this.numeroConta = 0;
+    this.numeroConta = Math.floor(Math.random() * 900000000) + 100000000;
     this.agencia = 0;
     this.saldo = 0;
     this.extrato = [];
@@ -14,7 +14,10 @@ export default class ContaBancaria {
   public depositar(valor: number) {
     if (valor > 0) {
       this.saldo += valor;
-      this.extrato.push(`Depósito de R$ ${valor.toFixed(2)}`);
+
+      let descricao = `Depósito de R$ ${valor.toFixed(2)}`
+      this.registrarOperacao(descricao)
+      
       return this.saldo;
     } else {
       throw new Error("Valor inválido");
@@ -24,7 +27,10 @@ export default class ContaBancaria {
   public sacar(valor: number) {
     if (valor > 0 && valor <= this.saldo) {
       this.saldo -= valor;
-      this.extrato.push(`Saque de R$ ${valor.toFixed(2)}`);
+
+      let descricao = `Saque de R$ ${valor.toFixed(2)}`
+      this.registrarOperacao(descricao)
+
       return this.saldo;
     } else {
       throw new Error("Valor inválido ou saldo insuficiente");
@@ -33,14 +39,21 @@ export default class ContaBancaria {
 
   private receberTransferencia(valor: number, conta: ContaBancaria) {
     conta.saldo += valor
-    conta.extrato.push(`Transferência de R$ ${valor.toFixed()} recebida`)
+
+    let descricao = `Transferência de R$ ${valor.toFixed()} recebida`
+    conta.registrarOperacao(descricao)
+    
   }
 
   public transferir(valor: number, conta: ContaBancaria) {
     if (valor > 0 && valor <= this.saldo) {
       conta.receberTransferencia(valor, conta)
       this.saldo -= valor
-      this.extrato.push(`Transferência de R$ ${valor.toFixed(2)} realizada.`)
+
+      let descricao = `Transferência de R$ ${valor.toFixed(2)} realizada.`
+
+      this.registrarOperacao(descricao)
+      
       return this.saldo;
     } else {
       throw new Error("Valor inválido ou saldo insuficiente");
@@ -62,18 +75,12 @@ export default class ContaBancaria {
     return extratoString.trim()
   }
   
-  /*
+  private registrarOperacao(descricao: string) {
+    let data: Date | string = new Date()
+data = `${data.getDate()}/${(data.getMonth() + 1)}/${data.getFullYear()}`
 
-  5. **exibirExtrato()**: Exibe o histórico de transações (extrato) realizadas na conta.
-6. **registrarOperacao(descricao: string)**: Método privado para registrar cada operação no extrato da conta, incluindo a data e a descrição da transação.
-*/
+    descricao = `${descricao} - ${data}`
+    this.extrato.push(descricao)
+  }
 }
 
-let conta = new ContaBancaria
-let contaDois = new ContaBancaria
-
-conta.depositar(500)
-conta.depositar(500)
-conta.depositar(500)
-conta.sacar(500)
-conta.exibirExtrato()

@@ -44,7 +44,6 @@ describe("Teste da classe ContaBancaria", () => {
   test("Exibir Extrato", () => {
     conta.depositar(200)
     conta.sacar(100)
-    expect(conta.exibirExtrato()).toBe("1. Depósito de R$ 200.00\n2. Saque de R$ 100.00")
+    expect(conta.exibirExtrato()).toBe("1. Depósito de R$ 200.00 - 19/9/2024\n2. Saque de R$ 100.00 - 19/9/2024")
   })
-  
 })
